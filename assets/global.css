@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css?family=Lexend:400,500,600,700|Roboto:400,500,700&display=swap");
+
+:root {
+  --lexend: "Lexend", sans-serif;
+  --roboto: "Roboto", sans-serif;
+  --font-default: "Roboto", sans-serif;
+  --font-featured: "Lexend", sans-serif;
+}
+
+.lexend {
+  font-family: var(--lexend);
+}
+
+.roboto {
+  font-family: var(--roboto);
+}
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+}
+
+/* Cor de fundo da barra de rolagem */
+::-webkit-scrollbar-track {
+  background-color: #ddbb4b50;
+}
+
+/* Cor do preenchimento da barra de rolagem */
+::-webkit-scrollbar-thumb {
+  background-color: #ddbb4b80;
+  border-radius: 2px;
+}
+
+/* Estilo ao passar o mouse sobre a barra de rolagem */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ddbb4b;
+}
+
+/* Estilo para o botão de aumento e diminuição da barra de rolagem */
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+.botao {
+  text-transform: none;
+  letter-spacing: 0;
+  text-indent: 0;
+  font-weight: 600;
+}
+
+.botao.v-btn--active:before {
+  opacity: 0;
+}
+
+.botao.v-btn--active:hover:before {
+  opacity: 0.08;
+}
+
+body,
+#app {
+  background-color: var(--v-fundo-base);
+}
+
+.vejaMais {
+  text-transform: none;
+  letter-spacing: 0;
+  text-indent: 0;
+  font-weight: 600;
+  color: white !important;
+}
+
+.botao .v-btn__content,
+.vejaMais .v-btn__content {
+  gap: 10px !important;
+}

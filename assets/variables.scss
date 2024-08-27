@@ -1,0 +1,25 @@
+
+:root {
+    --v-primary-base: #{map-get($vuetifyTheme, primary)};
+    --v-secondary-base: #{map-get($vuetifyTheme, secondary)};
+    --v-accent-base: #{map-get($vuetifyTheme, accent)};
+    --v-error-base: #{map-get($vuetifyTheme, error)};
+    --v-info-base: #{map-get($vuetifyTheme, info)};
+    --v-success-base: #{map-get($vuetifyTheme, success)};
+    --v-warning-base: #{map-get($vuetifyTheme, warning)};
+    --v-vermelho_telha-base: #{map-get($vuetifyTheme, vermelho_telha)};
+    --v-azul_turquesa-base: #{map-get($vuetifyTheme, azul_turquesa)};
+    --v-amarelo_mostarda-base: #{map-get($vuetifyTheme, amarelo_mostarda)};
+    --v-preto_noite-base: #{map-get($vuetifyTheme, preto_noite)};
+    --v-roxo-base: #{map-get($vuetifyTheme, roxo)};
+    --v-bege-base: #{map-get($vuetifyTheme, bege)};
+    --v-fundo-base: #{map-get($vuetifyTheme, fundo)};
+    --v-cinza_leve-base: #{map-get($vuetifyTheme, cinza_leve)};
+    --v-cinza_medio-base: #{map-get($vuetifyTheme, cinza_medio)};
+    --v-branco-base: #{map-get($vuetifyTheme, branco)};
+    --v-cinza_fraco-base: #{map-get($vuetifyTheme, cinza_fraco)};
+    --v-bege_escuro-base: #{map-get($vuetifyTheme, bege_escuro)};
+    --v-bege_claro-base: #{map-get($vuetifyTheme, bege_claro)};
+    --v-bege_sombrio-base: #{map-get($vuetifyTheme, bege_sombrio)};
+  }
+  

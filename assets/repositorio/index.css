@@ -1,0 +1,69 @@
+/* repositorios */
+.grid-repositorio {
+    padding: 10px 0px 50px;
+    display: grid;
+    grid-template: ". ." / 1fr .40fr;
+    gap: 40px;
+  }
+
+.grid-repositorio > section{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.grid-repositorio > aside{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.grid-repositorio > aside > h3{
+    font-family: var(--font-featured);
+    color: var(--v-roxo-base);
+}
+
+.grid-repositorio > aside > h5{
+    font-family: var(--font-featured);
+    color: var(--v-preto_noite-base);
+}
+
+.item-repositorio{
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+    font-family: var(--font-featured);
+    border-bottom: 1px solid var(--v-amarelo_mostarda-base);
+    padding-bottom: 25px;
+}
+.item-repositorio:last-child{
+    border-bottom:none;
+}
+
+.item-repositorio > header {
+    display: grid;
+    grid-template: ". ." / 1fr max-content;
+  }
+.item-repositorio > header h1{
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--v-roxo-base);
+    cursor: pointer;
+}
+.item-repositorio > header h1:hover{
+   color: var(--v-amarelo_mostarda-base); 
+}
+.item-repositorio > div > span{
+    font-weight: 600;
+    color: var(--v-preto_noite-base);
+}
+.item-repositorio > div > span:last-child{
+    font-weight: 400;
+}
+
+/* admin */
+.rightIsAdmin {
+  display: flex;
+  justify-content: flex-end;
+}
+
