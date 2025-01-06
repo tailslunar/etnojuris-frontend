@@ -1,0 +1,20 @@
+@host = https://etnojuris.ufam.edu.br:8000/index.php/api
+
+@token = 122|SscWhP2CI6k4PrgrCAH4qy9xLJOLTroEqVkjJ6UH0efa75b9
+POST {{host}}/tb_parte HTTP/1.1
+Content-Type: application/json
+
+{
+    "Bearer": "{{token}}",
+    "nome": "SOU UM CARA QUE EXISTE",
+    "cpf": null,
+    "cnpj": null,
+    "papel": "reu",
+    "categoria": "procurador",
+    "cpf_cnpj": null
+}
+
+###
+
+GET  {{host}}/tb_parte HTTP/1.1
+Content-Type: application/json

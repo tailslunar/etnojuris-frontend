@@ -12,7 +12,7 @@
                 Digite o nome do quilombo procurar na lista. Caso o quilombo não esteja
                 cadastrado, selecione a última opção para fazer o cadastrado.
             </div>
-            <v-autocomplete v-model="id" :items="quilombos" :loading="loading" clearable item-text="nome"
+             <v-autocomplete v-model="id" :items="quilombos" :loading="loading" clearable item-text="nome"
                 item-value="id" label="Selecione um Quilombo" outlined :search-input.sync="consulta"
                 :menu-props="{ closeOnContentClick: true }" :filter="acharQuilombo">
                 <template v-slot:no-data>
@@ -45,8 +45,14 @@ export default {
     computed: {
         ...mapGetters("auth", ["usuarioID"]),
         ...mapGetters("processo", ["quilombo"]),
+        ...mapGetters("historico", ["getQuilombos"]),
         objQuilombo() {
-            if (!this.quilombos || this.quilombos.length < 1 || !this.quilombos[0]) return {};
+            let arrayVazioSemConsulta = (!this.quilombos || this.quilombos.length < 1 || !this.quilombos[0]) && !this.consulta
+            let arrayVazioComConsulta = (!this.quilombos || this.quilombos.length < 1 || !this.quilombos[0]) && !!this.consulta
+
+            if (arrayVazioSemConsulta) return {};
+            if (arrayVazioComConsulta) return { nome: this.consulta, usuario_id: this.usuarioID }
+
             const objQuilombo = {};
             Object.keys(this.quilombos[0]).forEach(key => objQuilombo[key] = null);
 
@@ -81,17 +87,20 @@ export default {
             if (id !== undefined && nome !== undefined && id == null) {
                 this.quilombos.push({ id, nome })
             }
-            if(id !== undefined){
+            if (id !== undefined) {
                 this.id = id
             }
         })
     },
     methods: {
         ...mapActions('processo', ['whatQuilombo']),
+        ...mapActions("historico", ["setQuilombo"]),
         async iniciarQuilombo() {
+            this.quilombos = this.getQuilombos
             try {
                 const { data: { data } } = await this.$axios.get(`/api/tb_quilombo`);
                 this.quilombos = data;
+                this.setQuilombo(data)
             } catch (error) {
                 console.error(error);
             }

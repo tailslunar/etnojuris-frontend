@@ -59,8 +59,8 @@ export const actions = {
         commit("SET_USER_LOGADO", true)
     },
     deslogarUsuario({ commit }) {
-        //commit("SET_USER", {})
-        //commit("SET_USER_LOGADO", false)
+        commit("SET_USER", {})
+        commit("SET_USER_LOGADO", false)
         commit("SET_AUTH_RESET")
     },
     resetUsuario({commit}){

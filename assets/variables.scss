@@ -1,25 +1,47 @@
+$vuetifyTheme: (
+  primary: #007BFF,
+  secondary: #424242,
+  accent: #82B1FF,
+  error: #FF5252,
+  info: #2196F3,
+  success: #4CAF50,
+  warning: #FFC107,
+  vermelho_telha: #BA5A36,
+  azul_turquesa: #33CCCC,
+  amarelo_mostarda: #DDBB4B,
+  preto_noite: #151A1E,
+  roxo: #524391,
+  bege: #F9F8E1,
+  fundo: #F9F8E1,
+  cinza_leve: #E7E7E7,
+  cinza_medio: #7C7C8A,
+  branco: #FFFFFF,
+  cinza_fraco: #F3F3F3,
+  bege_escuro: #EEEDCB,
+  bege_claro: #FCFBF2,
+  bege_sombrio: #DDDCBE
+);
 
 :root {
-    --v-primary-base: #{map-get($vuetifyTheme, primary)};
-    --v-secondary-base: #{map-get($vuetifyTheme, secondary)};
-    --v-accent-base: #{map-get($vuetifyTheme, accent)};
-    --v-error-base: #{map-get($vuetifyTheme, error)};
-    --v-info-base: #{map-get($vuetifyTheme, info)};
-    --v-success-base: #{map-get($vuetifyTheme, success)};
-    --v-warning-base: #{map-get($vuetifyTheme, warning)};
-    --v-vermelho_telha-base: #{map-get($vuetifyTheme, vermelho_telha)};
-    --v-azul_turquesa-base: #{map-get($vuetifyTheme, azul_turquesa)};
-    --v-amarelo_mostarda-base: #{map-get($vuetifyTheme, amarelo_mostarda)};
-    --v-preto_noite-base: #{map-get($vuetifyTheme, preto_noite)};
-    --v-roxo-base: #{map-get($vuetifyTheme, roxo)};
-    --v-bege-base: #{map-get($vuetifyTheme, bege)};
-    --v-fundo-base: #{map-get($vuetifyTheme, fundo)};
-    --v-cinza_leve-base: #{map-get($vuetifyTheme, cinza_leve)};
-    --v-cinza_medio-base: #{map-get($vuetifyTheme, cinza_medio)};
-    --v-branco-base: #{map-get($vuetifyTheme, branco)};
-    --v-cinza_fraco-base: #{map-get($vuetifyTheme, cinza_fraco)};
-    --v-bege_escuro-base: #{map-get($vuetifyTheme, bege_escuro)};
-    --v-bege_claro-base: #{map-get($vuetifyTheme, bege_claro)};
-    --v-bege_sombrio-base: #{map-get($vuetifyTheme, bege_sombrio)};
-  }
-  
+  --v-primary-base: #{map-get($vuetifyTheme, primary)};
+  --v-secondary-base: #{map-get($vuetifyTheme, secondary)};
+  --v-accent-base: #{map-get($vuetifyTheme, accent)};
+  --v-error-base: #{map-get($vuetifyTheme, error)};
+  --v-info-base: #{map-get($vuetifyTheme, info)};
+  --v-success-base: #{map-get($vuetifyTheme, success)};
+  --v-warning-base: #{map-get($vuetifyTheme, warning)};
+  --v-vermelho_telha-base: #{map-get($vuetifyTheme, vermelho_telha)};
+  --v-azul_turquesa-base: #{map-get($vuetifyTheme, azul_turquesa)};
+  --v-amarelo_mostarda-base: #{map-get($vuetifyTheme, amarelo_mostarda)};
+  --v-preto_noite-base: #{map-get($vuetifyTheme, preto_noite)};
+  --v-roxo-base: #{map-get($vuetifyTheme, roxo)};
+  --v-bege-base: #{map-get($vuetifyTheme, bege)};
+  --v-fundo-base: #{map-get($vuetifyTheme, fundo)};
+  --v-cinza_leve-base: #{map-get($vuetifyTheme, cinza_leve)};
+  --v-cinza_medio-base: #{map-get($vuetifyTheme, cinza_medio)};
+  --v-branco-base: #{map-get($vuetifyTheme, branco)};
+  --v-cinza_fraco-base: #{map-get($vuetifyTheme, cinza_fraco)};
+  --v-bege_escuro-base: #{map-get($vuetifyTheme, bege_escuro)};
+  --v-bege_claro-base: #{map-get($vuetifyTheme, bege_claro)};
+  --v-bege_sombrio-base: #{map-get($vuetifyTheme, bege_sombrio)};
+}

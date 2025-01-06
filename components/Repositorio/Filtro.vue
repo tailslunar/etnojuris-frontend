@@ -19,7 +19,7 @@
     </template>
 
     <template v-if="tags">
-      <h5>Autores</h5>
+      <h5>Tags</h5>
       <div class="controle_filtro">
         <v-btn class="botao" color="roxo" :outlined="!isActive('filterby_tag', tag)" x-small v-for="(tag, i) in tags" :key="i"
           :to="{ name: 'dashboard-repositorio', query: { filterby_tag: tag } }" v-html="tag" />
@@ -34,7 +34,7 @@ export default {
   methods: {
     isActive(param, value) {
       return this.$route.query[param] == value;
-    }
+    },
   }
 };
 </script>

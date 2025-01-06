@@ -1,10 +1,9 @@
 <template>
-    <main>
     <div class="painel">
         <div data-grid="border"></div>
         <div data-grid="header">Adicionar processo</div>
         <div data-grid="h_bt">
-            <v-btn text class="botao lexend">Salvar e sair <v-icon class="ml-2"> mdi-close </v-icon></v-btn>
+            <v-btn text class="botao lexend" @click.prevent="salvarESair">Salvar e sair <v-icon class="ml-2"> mdi-close </v-icon></v-btn>
         </div>
         <div data-grid="link" >
             <WizardMenu nome="Quilombo" url="dashboard-processos-wizard" :condicao="hasQuilombo"/>
@@ -17,7 +16,6 @@
         <div data-grid="conteudo"><slot /></div>
         <div data-grid="footer"><slot name="footer" /></div>
     </div>
-    </main>
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
@@ -26,7 +24,10 @@ export default {
         ...mapGetters("processo", ["hasQuilombo", "hasQuilomboLocalizacao", "hasQuilomboEndereco", "hasProcesso", "hasPartes", "hasSentenca", "allprocesso"]),
     },
     methods:{
-        ...mapActions("processo", ["restartProcesso"])
+        ...mapActions("processo", ["restartProcesso"]),
+        salvarESair(){
+            this.$router.push({ name: `dashboard` })
+        }
     }
 }
 </script>

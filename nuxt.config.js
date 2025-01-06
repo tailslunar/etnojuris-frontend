@@ -25,6 +25,10 @@ const vuetifyTheme = {
 }
 
 export default {
+  server: {
+    host: '0.0.0.0', // Isso faz com que o servidor esteja acessível em toda a rede local
+    port: 3000        // Você pode alterar a porta se necessário
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: 'Etnojuris :: %s',
@@ -39,7 +43,8 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Lexend:wght@100,200,300,400;500;600;700&family=Roboto:wght@400;500;700&display=swap' }
     ]
   },
 
@@ -57,8 +62,8 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     '~/plugins/svg-map',
-    {src: '~/plugins/graficos', mode: 'client'},
-    {src: '~/plugins/mapa', mode: 'client'},
+    { src: '~/plugins/graficos', mode: 'client' },
+    { src: '~/plugins/mapa', mode: 'client' },
     '~/plugins/v-mask',
     { src: '~/plugins/vuex-persistedstate', ssr: false }
   ],

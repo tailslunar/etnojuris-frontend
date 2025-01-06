@@ -10,6 +10,11 @@
             <div class="main">
                 <Nuxt />
             </div>
+            <div class="apoio">
+                <img :src="require('@/assets/home/logos/ufam.png')" />
+                <img :src="require('@/assets/home/logos/fapeam.png')" />
+                <img :src="require('@/assets/home/logos/cnpq.svg')" />
+            </div>
             <div class="footer">
                 <LayoutFooter />
             </div>
@@ -41,6 +46,7 @@ export default {
     grid-template:
         " header  header " min-content
         " aside   main " 1fr
+        " apoio   main " min-content
         / 1fr 1fr;
 }
 
@@ -65,11 +71,26 @@ export default {
     grid-template:
         " header " min-content
         " main " 1fr
+        " apoio " max-content
         " footer" min-content
         / 1fr;
 }
 
 #gridHome.isMobile>.footer {
     display: block;
+}
+
+.apoio{
+    grid-area: apoio;
+    display: grid;
+    grid-template-columns: max-content max-content max-content; 
+    gap: 45px; 
+    padding:15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.apoio>img{
+    height: 60px; /* Mantém a proporção das imagens */
 }
 </style>

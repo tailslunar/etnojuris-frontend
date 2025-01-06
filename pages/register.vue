@@ -125,7 +125,7 @@ export default {
     async submit() {
       let scheme = {
         name: this.field.nome_completo,
-        email: this.field.email,
+        email: this.field.email.toLocaleLowerCase(),
         password: this.field.senha.value,
       };
       try {

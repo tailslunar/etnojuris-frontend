@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const state = () => ({
     objQuilombo: {},
     objProcesso: {},
@@ -12,13 +14,15 @@ export const getters = {
 
     hasQuilombo: (state) => Object.keys(state.objQuilombo).length > 0,
     
-    hasQuilomboLocalizacao: (state) => {
-        const { latitude, longitude, id } = state.objQuilombo;
-        return Object.keys(state.objQuilombo).length > 0 && ( !!id || (latitude !== null && longitude !== null) )
+    hasQuilomboLocalizacao: ({objQuilombo}) => {
+        if (!['latitude', 'longitude'].every(key => key in objQuilombo)) return false;
+        const { id, latitude, longitude } = objQuilombo;
+        return !!id || (latitude !== null && longitude !== null);
     },
-    hasQuilomboEndereco: (state) => {
-        const { cep, id } = state.objQuilombo;
-        return Object.keys(state.objQuilombo).length > 0 && ( !!id || cep !== null )
+    hasQuilomboEndereco: ({objQuilombo}) => {
+        if (!['cep'].every(key => key in objQuilombo)) return false;
+        const { cep, id } = objQuilombo;
+        return Object.keys(objQuilombo).length > 0 && ( !!id || cep !== null )
     },
     hasProcesso: (state) => Object.keys(state.objProcesso).length > 0,
 
@@ -72,7 +76,7 @@ export const actions = {
         commit("SET_PROCESSO", processo)
     },    
     whatParte({ commit }, parte) {
-        const id = crypto.randomUUID();
+        const id =  uuidv4();
         const parteComID = {id,...parte}
         commit("SET_PARTE", parteComID)
     },

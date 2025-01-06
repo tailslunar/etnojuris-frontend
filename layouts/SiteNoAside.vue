@@ -7,6 +7,12 @@
             <div class="main">
                 <Nuxt />
             </div>
+
+            <div class="apoio">
+                <img :src="require('@/assets/home/logos/ufam.png')" />
+                <img :src="require('@/assets/home/logos/fapeam.png')" />
+                <img :src="require('@/assets/home/logos/cnpq.svg')" />
+            </div>
         </div>
     </Init>
 </template>
@@ -20,6 +26,7 @@
     grid-template:
         " header" min-content
         " main" 1fr
+        " apoio " max-content
         / 1fr;
 }
 
@@ -33,5 +40,19 @@
 
 #gridHome>.main>* {
     margin: auto;
+}
+
+.apoio{
+    grid-area: apoio;
+    display: grid;
+    grid-template-columns: max-content max-content max-content; 
+    gap: 45px; 
+    padding:15px;
+    align-items: center;
+    justify-content: center;
+}
+
+.apoio>img{
+    height: 60px; /* Mantém a proporção das imagens */
 }
 </style>

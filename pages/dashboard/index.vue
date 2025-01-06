@@ -3,9 +3,7 @@
     <v-alert v-if="error.active" type="error" dismissible>
       {{ error.message }}
     </v-alert>
-    <HomeHeader />
-    <HomeMain />
-    <HomePesquisa /> 
+    <Dashboard />
   </Canvas>
 </template>
 
@@ -34,6 +32,7 @@ export default {
   },
   methods: {
     ...mapActions("dashboard", ["setDashboard", "setDashboardEstado", "setDashboardEstadoRegiao"]),
+    ...mapActions("auth", ["deslogarUsuario"]),
     async main() {
       try {
         const { data } = await this.$axios.post(
@@ -44,6 +43,8 @@ export default {
       } catch (error) {
         this.error.active = true;
         this.error.message = error.response?.data?.message || "Erro";
+        this.deslogarUsuario()
+        this.$router.push({name:"index"})
       }
     },
   },

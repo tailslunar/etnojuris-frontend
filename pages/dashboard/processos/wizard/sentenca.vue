@@ -23,7 +23,7 @@ export default {
     data() {
         const field = {
             data_publicacao: "",
-            sentenca_id: "",
+            sentenca_id: null,
         }
         return {
             field, isValid: false,

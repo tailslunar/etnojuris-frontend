@@ -2,7 +2,7 @@
     <LayoutMiddle>
       <h3>Obrigado</h3>
       <h4>
-        As instruções foram enviadas para <strong>cassius.crr@gmail.com</strong>, caso tenha um
+        As instruções foram enviadas para <strong>{{$route.query.email}}</strong>, caso tenha um
         perfil registrado com esse e-mail. Se você não recebeu o e-mail, por favor
         revise a escrita do seu endereço de e-mail(verifique se nao há erros de
         digitação) e solicite o reenvio das instruções.

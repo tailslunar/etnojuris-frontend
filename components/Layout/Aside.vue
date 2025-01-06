@@ -21,9 +21,12 @@ export default {
 <style scoped>
 aside {
   width: 100%;
+  min-height: 700px;
   height: 100%;
-  background: url("@/assets/home/01.png") top right no-repeat;
-  background-size: cover;
+  background-image: url("@/assets/home/01.png");
+  background-size: cover; /* Ajusta a altura para 100% do contêiner e adapta a largura */
+  background-position: right center;
+  background-repeat: no-repeat;
 }
 aside.bg-01{
   background-image: url("@/assets/home/01.png");

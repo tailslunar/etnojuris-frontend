@@ -4,186 +4,99 @@
     <header>
       <div>Quilombos</div>
       <div>
-        <v-btn
-          depressed
-          class="botao"
-          color="bege_sombrio"
-          :to="{ name: 'dashboard-quilombos' }"
-        >
+        <v-btn depressed class="botao" color="bege_sombrio" :to="{ name: 'dashboard-quilombos' }">
           <v-icon>mdi-map-marker</v-icon> Mapa
         </v-btn>
         <v-dialog v-model="ativarFiltros">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              depressed
-              class="botao"
-              color="bege_sombrio"
-              v-bind="attrs"
-              v-on="on"
-            >
+            <v-btn depressed class="botao" color="bege_sombrio" v-bind="attrs" v-on="on">
               <v-icon>mdi-filter-variant</v-icon> Filtrar
             </v-btn>
           </template>
           <template v-slot:default="dialog">
             <v-card>
-              <v-toolbar color="amarelo_mostarda branco--text" class="lexand"
-                >Filtros</v-toolbar
-              >
+              <v-toolbar color="amarelo_mostarda branco--text" class="lexand">Filtros</v-toolbar>
               <div class="itensColuna">
                 <h5>Mostrar campos:</h5>
-                <v-checkbox
-                  v-for="(header, ind) in headerTable"
-                  :key="ind"
-                  v-model="header.show"
-                  v-if="header.show !== undefined"
-                  :label="header.text"
-                  color="roxo"
-                />
-              </div>
-
-              <div class="grid_filter" v-if="false">
-                <div class="itensField">
-                  <h5>Competência:</h5>
-                  <v-autocomplete
-                    chips
-                    deletable-chips
-                    multiple
-                    solo
-                    :items="competencia"
-                    v-model="filterby.competencia"
-                  ></v-autocomplete>
-                </div>
-
-                <div class="itensField">
-                  <h5>Jurisdicao:</h5>
-                  <v-autocomplete
-                    chips
-                    deletable-chips
-                    multiple
-                    solo
-                    :items="jurisdicao"
-                    v-model="filterby.jurisdicao"
-                  ></v-autocomplete>
-                </div>
-
-                <div class="itensField">
-                  <h5>Comarca:</h5>
-                  <v-autocomplete
-                    chips
-                    deletable-chips
-                    multiple
-                    solo
-                    :items="comarca"
-                    v-model="filterby.comarca"
-                  ></v-autocomplete>
-                </div>
-
-                <div class="itensField">
-                  <h5>Foro:</h5>
-                  <v-autocomplete
-                    chips
-                    deletable-chips
-                    multiple
-                    solo
-                    :items="foro"
-                    v-model="filterby.foro"
-                  ></v-autocomplete>
-                </div>
-
-                <div class="itensField">
-                  <h5>Vara:</h5>
-                  <v-autocomplete
-                    chips
-                    deletable-chips
-                    multiple
-                    solo
-                    :items="vara"
-                    v-model="filterby.vara"
-                  ></v-autocomplete>
-                </div>
-
-                <div class="itensField">
-                  <h5>Quilombo:</h5>
-                  <v-autocomplete
-                    chips
-                    deletable-chips
-                    multiple
-                    solo
-                    :items="quilombos"
-                    v-model="filterby.quilombo"
-                  ></v-autocomplete>
-                </div>
+                <v-checkbox v-for="(header, ind) in headerTable" :key="ind" v-model="header.show" v-if="!header.hidden"
+                  :label="header.text" color="roxo" />
               </div>
               <v-divider></v-divider>
               <v-card-actions class="justify-end">
-                <v-btn
-                  class="botao lexand"
-                  color="roxo branco--text"
-                  @click="dialog.value = false"
-                  >Confirmar</v-btn
-                >
+                <v-btn class="botao lexand" color="roxo branco--text" @click="dialog.value = false">Confirmar</v-btn>
               </v-card-actions>
             </v-card>
           </template>
         </v-dialog>
-        <v-btn depressed class="botao" color="bege_sombrio">
-          <v-icon>mdi-tray-arrow-down</v-icon> Exportar</v-btn
-        >
+        <v-btn depressed class="botao" color="bege_sombrio" @click.prevent="exportData">
+          <v-icon>mdi-tray-arrow-down</v-icon> Exportar</v-btn>
         <v-btn depressed class="botao" color="amarelo_mostarda" v-if="!!this.isAdmin"
-        :to="{ name: 'dashboard-quilombos-admin-novo' }"
-        >
+          :to="{ name: 'dashboard-quilombos-admin-novo' }">
           <v-icon>mdi-plus</v-icon> <span>Adicionar Quilombo</span>
         </v-btn>
       </div>
     </header>
-
     <div>
-      <v-chip
-        v-for="(filtro, i) in filtrosAtivos"
-        :key="i"
-        class="ma-2"
-        color="roxo branco--text"
-        close
-        @click:close="removerFiltro(filtro)"
-        >{{ filtro.value }}</v-chip
-      >
+      <v-chip v-for="(filtro, i) in filtrosAtivos" :key="i" class="ma-2" color="roxo branco--text" close
+        @click:close="removerFiltro(filtro)">{{ filtro.value }}</v-chip>
     </div>
-    
     <v-data-table :headers="headers" :items="quilombosFiltrados" item-key="id">
+      <template v-slot:item._nr_processo="{ item }">
+        <template v-if="item.nr_processo === 0">
+          <v-btn text class="botao" color="roxo" disabled>0 Processo </v-btn>
+        </template>
+        <template v-if="item.nr_processo === 1">
+          <v-btn text class="botao" color="roxo"
+            :to="{ name: 'dashboard-quilombos-processos-nr', params: { nr: item.processos } }"> 1 Processo </v-btn>
+        </template>
+        <template v-if="item.nr_processo > 1">
+          <v-btn text class="botao" color="roxo"
+            :to="{ name: 'dashboard-quilombos-processos-nr', params: { nr: item.processos } }"> {{ item.nr_processo }}
+            Processos </v-btn>
+        </template>
+      </template>
+
       <template v-slot:item._action="{ item }">
         <div class="botoesAcao">
-          <v-btn small text color="roxo" :to="{ name: 'dashboard-quilombos-admin-editar-id', params: { id: item.id} }"><v-icon>mdi-pencil</v-icon></v-btn>
-          <v-btn small text color="vermelho_telha" @click.prevent="deleteQuilombo(item.id)"><v-icon>mdi-delete</v-icon></v-btn>
+          <v-btn small text color="roxo"
+            :to="{ name: 'dashboard-quilombos-admin-editar-id', params: { id: item.id } }"><v-icon>mdi-pencil</v-icon></v-btn>
+          <v-btn small text color="vermelho_telha"
+            @click.prevent="deleteQuilombo(item.id)"><v-icon>mdi-delete</v-icon></v-btn>
         </div>
       </template>
     </v-data-table>
   </Canvas>
 </template>
 
+
+
 <script>
+import { createExcel } from '@/services/export';
+
 import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       quilombos: [],
       headerTable: [
-        { text: "#", value: "id", align: "start", show: true },
-
-        { text: "CNPJ", value: "cnpj", show: true},
-        { text: "Quilombo", value: "nome", show: true },
-
-        { text: "Associação", value: "associacao", show: false },
-        { text: "CEP", value: "cep", show: false },
-        { text: "Endereço", value: "endereco", show: false },
-        { text: "Número", value: "numero", show: false },
-        { text: "Latitude", value: "latitude", show: false },
-        { text: "Longitude", value: "longitude", show: false },
-        { text: "Área", value: "area", show: false },
-        { text: "IDLocalidade", value: "localidade_id" },
-        { text: "Localidade", value: "localidade_id", show: false },
-        { text: "IDUsuario", value: "usuario_id" },
-        { text: "Usuário", value: "usuario_id", show: false },
-        { text: "Ações", value: "_action", show: true },
+        { text: "#", value: "id", align: "start", show: true, hidden: false, width: "100" },
+        { text: "CNPJ", value: "cnpj", show: false, hidden: false },
+        { text: "Quilombo", value: "nome", show: false, hidden: false },
+        { text: "Quilombo/Associacao", value: "associacao", show: true, hidden: false },
+        { text: "Processos", value: "_nr_processo", show: true, hidden: false, width: "200" },
+        { text: "Cidade", value: "cidade", show: true, hidden: false },
+        { text: "Estado", value: "estado", show: true, hidden: false },
+        //{ text: "CEP", value: "cep", show: false, hidden: false },
+        //{ text: "Endereço", value: "endereco", show: false, hidden: false },
+        //{ text: "Número", value: "numero", show: false, hidden: false },
+        //{ text: "Latitude", value: "latitude", show: false, hidden: false },
+        //{ text: "Longitude", value: "longitude", show: false, hidden: false },
+        //{ text: "Área", value: "area", show: false, hidden: false },
+        //{ text: "IDLocalidade", value: "localidade_id", hidden: false },
+        //{ text: "Localidade", value: "localidade_id", show: false, hidden: false },
+        //{ text: "IDUsuario", value: "usuario_id", hidden: false },
+        //{ text: "Usuário", value: "usuario_id", show: false, hidden: false },
+        { text: " ", value: "_action", show: true, hidden: true, width: "150" }
       ],
       ativarFiltros: false,
       filterby: {
@@ -196,7 +109,8 @@ export default {
   },
   computed: {
     ...mapGetters("auth", ["isAdmin", "token", "usuarioID"]),
-     headers() {
+    ...mapGetters("historico", ["getQuilombos"]),
+    headers() {
       let index = this.headerTable.findIndex((a) => a.value === "_action");
       if (index !== -1) {
         this.headerTable[index].show = !!this.isAdmin;
@@ -218,26 +132,59 @@ export default {
     },
     quilombosFiltrados() {
       let { nome, associacao, localidade, cnpj } = this.filterby;
-      let { quilombos } = this;
+      const normalizarTexto = (texto) => {
+        if (!texto) return ''; // Retorna string vazia se o texto for null ou undefined
+        return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      };
+
+      const filtrarPorTermos = (array, termos, campo) => {
+        const termosNormalizados = termos.split(" ").map(normalizarTexto);
+        return array.filter(item =>
+          termosNormalizados.every(termo => normalizarTexto(item[campo]).includes(termo))
+        );
+      };
+
+      const quilombos = this.quilombos.map(q => (
+        {
+          id: q.id,
+          nome: q.nome,
+          associacao: q.associacao,
+          cnpj: q.cnpj,
+          nr_processo: q.processos.length,
+          processos: q.processos.length > 0
+            ? q.processos.map(p => p.id).join('|')
+            : '',
+          cidade: q.localidade?.cidade || '-',
+          estado: q.localidade?.uf || '-',
+        }
+      ))
 
       let fQuilombos = {};
 
-      if (!!nome && nome != "") {
-        const termosNome = nome.split(" ");
-        fQuilombos.nome = quilombos.filter((q) =>
-          termosNome.every((termo) => q.nome.includes(termo))
+      if (nome) {
+        const termosNome = nome.split(" ").map(normalizarTexto);
+        fQuilombos.nome = quilombos.filter(q =>
+          termosNome.every(termo => normalizarTexto(q.nome).includes(termo)) ||
+          termosNome.every(termo => normalizarTexto(q.associacao).includes(termo))
         );
       }
 
-      if (!!associacao && associacao != "") {
-        const termosAssociacao = associacao.split(" ");
-        fQuilombos.associacao = quilombos.filter((q) =>
-          termosAssociacao.every((termo) => q.associacao.includes(termo))
+      if (associacao) {
+        const termosAssociacao = associacao.split(" ").map(normalizarTexto);
+        fQuilombos.associacao = quilombos.filter(q =>
+          termosAssociacao.every(termo => normalizarTexto(q.nome).includes(termo)) ||
+          termosAssociacao.every(termo => normalizarTexto(q.associacao).includes(termo))
         );
       }
 
-      if (!!cnpj && cnpj != "") {
-        fQuilombos.cnpj = quilombos.filter((q) => q.cnpj == cnpj);
+      if (cnpj) fQuilombos.cnpj = quilombos.filter(q => q.cnpj == cnpj);
+
+      if (localidade) {
+        const termosLocalidade = localidade.split(" ").map(normalizarTexto);
+        fQuilombos.localidade = quilombos.filter(q =>
+          termosLocalidade.every(termo => normalizarTexto(q.cidade).includes(termo)) ||
+          termosLocalidade.every(termo => normalizarTexto(q.estado).includes(termo))
+        );
       }
 
       let listasFiltradas = Object.values(fQuilombos);
@@ -249,7 +196,7 @@ export default {
       interseccao.sort((a, b) => b.id - a.id);
       return interseccao;
     },
-    objDelete() {
+    objQuilomboDelete() {
       return {
         Bearer: this.token
       }
@@ -260,12 +207,13 @@ export default {
   },
   methods: {
     ...mapActions("notificacao", ["sucesso", "falha", "confirmar"]),
+    ...mapActions("historico", ["setQuilombo"]),
     async iniciarQuilombo() {
+      this.quilombos = this.getQuilombos
       try {
-        const {
-          data: { data },
-        } = await this.$axios.get(`/api/tb_quilombo`);
+        const { data } = await this.$axios.get(`/api/quilombos_processos`);
         this.quilombos = data;
+        this.setQuilombo(data)
       } catch (error) {
         console.error(error);
       }
@@ -292,7 +240,7 @@ export default {
         callback: async (confirmed) => {
           if (confirmed) {
             try {
-              let response = await this.$axios.delete(`/api/tb_quilombo/${id}`, { data: this.objDelete });
+              let response = await this.$axios.delete(`/api/tb_quilombo/${id}`, { data: this.objQuilomboDelete });
               let { message } = response.data;
               this.sucesso({ titulo: message });
               this.iniciarQuilombo(); // Atualiza a lista de glossários após a exclusão
@@ -305,6 +253,18 @@ export default {
         },
       });
     },
+    exportData() {
+      const cols = [
+        ['UUID', 'id'],
+        ['Nome do Quilombo', 'nome'],
+        ['Associação', 'associacao'],
+        ['CNPJ', 'cnpj'],
+        ['Total Processos', 'nr_processo'],
+        ['Cidade', 'cidade'],
+        ['Estado', 'estado'],
+      ]
+      createExcel('Quilombos', this.quilombosFiltrados, cols);
+    }
   },
 };
 </script>
@@ -343,13 +303,13 @@ header {
   align-items: center;
 }
 
-header > div:nth-child(1) {
+header>div:nth-child(1) {
   font-size: 16px;
   color: var(--v-roxo-base);
   font-family: var(--font-featured);
 }
 
-header > div:nth-child(2) {
+header>div:nth-child(2) {
   display: flex;
   gap: 25px;
 }
@@ -357,6 +317,7 @@ header > div:nth-child(2) {
 .link {
   color: #000000de;
 }
+
 .botoesAcao {
   display: flex;
   gap: 10px;

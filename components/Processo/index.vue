@@ -1,112 +1,148 @@
 <template>
   <div class="item">
     <div data-grid="processo">
-      <ProcessoItem label="Processo" value="1000.00.0000.0000-0000" />
-      <ProcessoItem label="Comarca" value="TJAP" />
-      <ProcessoItem label="UF" value="AP" />
-      <ProcessoItem label="Tribunal" value="TRMG3" />
-      <ProcessoItem label="Distribuição" value="12/03/2022" />
+      <ProcessoItem label="Processo" :value="processo.objProcesso?.numero || '-'" />
+      <ProcessoItem label="Competencia" :value="processo.objProcesso?.competencia || '-'" />
+      <ProcessoItem label="Comarca" :value="processo.objProcesso?.comarca || '-'" />
+      <ProcessoItem label="UF" :value="processo.objLocalidade?.uf || '-'" />
+      <ProcessoItem label="Jurisdição" :value="processo.objProcesso?.jurisdicao || '-'" />
+      <ProcessoItem label="Distribuição" :value="formatData(processo.objProcesso.data_distribuicao)" />
     </div>
     <div data-grid="parte">
-      <h1>Parte monitorada</h1>
-      <ProcessoItem
-        label="Nome"
-        value="Associação de Moradores da Comunidade Quilombola de Conceição do Macacoari"
-      />
-      <ProcessoItem label="Polo" value="Passivo" />
-      <ProcessoItem
-        label="Nome do Quilombo"
-        value="Quilombo de Conceição do Macacoari"
-      />
+      <h1>Quilombo</h1>
+      <ProcessoItem label="Associação" :value="processo.objQuilombo?.associacao || '-'" />
+      <ProcessoItem label="Polo" :value="processo.objProcesso?.polo || '-'" />
+      <ProcessoItem label="Quilombo" :value="processo.objQuilombo?.associacao || '-'" />
     </div>
-    <div data-grid="natureza">
-      <h1>Natureza</h1>
-      <ProcessoItem value="Direito Civil Coisas Posse Esbulho Turbação Ameaça" />
-      <ProcessoItem
-        value="Direito Civil 899 - Coisas - 10432 - Posse 10444 - Esbulho Turbação Ameaça 10445"
-      />
-    </div>
-    <div data-grid="extra">
-      <h1>Assusto Extra</h1>
-      <ProcessoItem value="Direito Civil Coisas Posse Esbulho Turbação Ameaça" />
-      <ProcessoItem
-        value="Direito Civil 899 - Coisas - 10432 - Posse 10444 - Esbulho Turbação Ameaça 10445"
-      />
+    <div data-grid="extra" v-if="partes.length > 0">
+      <h1>Partes</h1>
+      <ProcessoParte  v-for="(parte, i) in partes" :key="i" :parte="parte"/>
     </div>
     <div data-grid="sentenca">
-      <h1>Senteça</h1>
-      <ProcessoItem label="Status" value="Sim" />
-      <ProcessoItem label="Data da sentença" value="10/10//2017" />
-      <ProcessoItem label="Classificação sentença" value="SENTENCA_SEM_INFORMACAO" />
-      <ProcessoItem label="Transitado julg." value="Sim" />
-      <ProcessoItem label="Arquivado" value="Definitivo" />
-      <ProcessoItem
-        label="Texto da sentença"
-        value="Juntada de certidão de trânsito em julgado"
-      />
+      <h1>Sentença</h1>
+      <ProcessoItem label="Classificação sentença" :value="processo.objSentenca?.nome || '-'" />
     </div>
   </div>
 </template>
 <script>
 export default {
   props: ["processo"],
-  mounted(){
-    this.init()
-  },
-  methods:{
-    async init(){
+  computed: {
+    partes() {
+      const { objParte, objParticipante, objAdvogado, objProcurador, objDefensoria } = this.processo;
+      let partesComRepresentantes = [];
 
+      const getParteId = (id) => {
+        let parte = objParte.flat().find(parte => parte.id == id);
+        if (!parte) return {}
+        return {
+          nome: parte.nome,
+          documento: parte.cpf_cnpj || parte.cnpj || parte.cpf || 'Sem Documento',
+        }
+      }
+
+      const getParteRepresentanteId = (categoria, id) => {
+        switch (categoria) {
+          case 'advogado':
+            let advogado = objAdvogado.flat().find(adv => adv.id == id);
+            if (!advogado) return {}
+            return advogado
+            break;
+          case 'procurador':
+            let procurador = objProcurador.flat().find(pro => pro.id == id);
+            if (!procurador) return {}
+            return procurador
+            break;
+          case 'defensoria':
+            let defensoria = objDefensoria.flat().find(dev => dev.id == id);
+            if (!defensoria) return {}
+            return defensoria
+            break;
+        }
+      }
+
+      partesComRepresentantes = objParticipante.map(p => ({
+        categoria: {
+          tipo: p.categoria,
+          ...getParteRepresentanteId(p.categoria, p[`${p.categoria}_id`])
+        },
+        papel: {
+          id: p.parte_id,
+          tipo: p.papel,
+          ...getParteId(p.parte_id)
+        },
+      }))
+
+      return partesComRepresentantes;
+    }
+  },
+  methods: {
+    formatData(data) {
+      if (!data) return data;
+      const [year, month, day] = data.split('-');
+      return `${day}/${month}/${year}`;
     }
   }
 };
 </script>
 <style scoped>
 .item {
-  background: var(--v-bege_escuro-base);
+  background: var(--v-branco-base);
   font-family: var(--font-featured);
-  border-radius: 25px;
+  border-radius: 5px;
 }
-.item > div {
+
+.item>div {
   padding: 10px 25px;
   border-bottom: 1px solid var(--v-amarelo_mostarda-base);
 }
-.item > div:last-child {
+
+.item>div:last-child {
   border-bottom: none;
 }
+
 .item h1 {
   color: var(--v-preto_noite-base);
   font-size: 16px;
   grid-area: header;
 }
+
 /* LAYOUT */
-.item > div {
+.item>div {
   display: grid;
   gap: 15px;
 }
+
 .item h1 {
   grid-area: header;
 }
 
-.item > div[data-grid="processo"] {
-  grid-template: ". . . . ." / 1fr 1fr 1fr 1fr 1fr;
+.item>div[data-grid="processo"] {
+  grid-template: ". . . . . ." / max-content 1fr 1fr 1fr 1fr 1fr;
 }
-.item > div[data-grid="parte"] {
-  grid-template: "header header" ". ." ". . "/ 1fr 1fr;
+
+.item>div[data-grid="parte"] {
+  grid-template: "header header" ". ." ". . " / 1fr 1fr;
 }
-.item > div[data-grid="natureza"] {
+
+.item>div[data-grid="natureza"] {
   grid-template: "header" "." / 1fr;
 }
-.item > div[data-grid="extra"] {
+
+.item>div[data-grid="extra"] {
   grid-template: "header" "." / 1fr;
+  gap: 0px;
 }
-.item > div[data-grid="sentenca"] {
-  grid-template: 
-    "header header header header header" 
-    ". . . . ." 
+
+.item>div[data-grid="sentenca"] {
+  grid-template:
+    "header header header header header"
+    ". . . . ."
     "final final final final final"
     / 1fr 1fr 1fr 1fr 1fr;
 }
-.item > div[data-grid="sentenca"] > *:last-child {
+
+.item>div[data-grid="sentenca"]>*:last-child {
   grid-area: final;
 }
 </style>
